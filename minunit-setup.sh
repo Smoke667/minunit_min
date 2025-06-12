@@ -98,8 +98,10 @@ fi
 
 # Recommendation for Makefile integration if either was created
 if [ ! -f "$BASE_DIR/$INCLUDE_DIR/minunit.h" ] || [ ! -d "$BASE_DIR/test" ]; then
-    echo -e "\nIf you want to integrate MinUnit with your Makefile, add the following target:\n"
+    echo -e "\nIf you want to integrate MinUnit with your Makefile, add the following target (simple):\n"
     echo -e 'minunit:\n\tcc -I$INCLUDE_DIR test/test_dummy.c -o test_dummy\n\t./test_dummy'
+    echo -e "\nFor more complex projects (with dependencies and linking), use:\n"
+    echo -e 'TEST_NAME = test_binary\nTEST_SRC = test/test_suite.c\nTEST_OBJS = $(TEST_SRC:.c=.o)\n\n$(TEST_NAME): $(TEST_OBJS) src_module.o $INCLUDE_DIR/minunit.h\n\tcc -I$INCLUDE_DIR $(TEST_OBJS) src_module.o -o $(TEST_NAME) -lpthread\n\ntest: $(TEST_NAME)\n\t./$(TEST_NAME)'
 fi
 
 # Final message

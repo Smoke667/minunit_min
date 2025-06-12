@@ -52,7 +52,9 @@ if [ -d "$BASE_DIR/test" ] && [ ! "$(ls -A $BASE_DIR/test)" ]; then
 fi
 
 # Advise about Makefile
-echo -e "\nIf you had a MinUnit target in your Makefile, please remove it manually.\nFor example, remove lines like:\n"
+echo -e "\nIf you had a MinUnit target in your Makefile, please remove it manually.\nFor example, remove lines like (simple):\n"
 echo -e 'minunit:\n\tcc -I$INCLUDE_DIR test/test_dummy.c -o test_dummy\n\t./test_dummy'
+echo -e "\nOr for more complex projects (with dependencies and linking):\n"
+echo -e 'TEST_NAME = test_binary\nTEST_SRC = test/test_suite.c\nTEST_OBJS = $(TEST_SRC:.c=.o)\n\n$(TEST_NAME): $(TEST_OBJS) src_module.o $INCLUDE_DIR/minunit.h\n\tcc -I$INCLUDE_DIR $(TEST_OBJS) src_module.o -o $(TEST_NAME) -lpthread\n\ntest: $(TEST_NAME)\n\t./$(TEST_NAME)'
 
 echo -e "\nMinUnit purge complete!"

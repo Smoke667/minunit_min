@@ -66,6 +66,20 @@ test: test/test_example.c includes/minunit.h
 	./test_example
 ```
 
+For more complex projects (with dependencies and linking), use a pattern like:
+
+```makefile
+TEST_NAME = test_binary
+TEST_SRC = test/test_suite.c
+TEST_OBJS = $(TEST_SRC:.c=.o)
+
+$(TEST_NAME): $(TEST_OBJS) src_module.o includes/minunit.h
+	cc -Iincludes $(TEST_OBJS) src_module.o -o $(TEST_NAME) -lpthread
+
+test: $(TEST_NAME)
+	./$(TEST_NAME)
+```
+
 You can create as many test files as you need and add similar rules to your Makefile.
 
 ---
