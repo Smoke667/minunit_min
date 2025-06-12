@@ -1,4 +1,4 @@
-# MinUnit Angellop
+# MinUnit Min
 
 ## Table of Contents
 - [Project Description](#project-description)
