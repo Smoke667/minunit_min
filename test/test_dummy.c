@@ -3,7 +3,7 @@
 int tests_run = 0;
 
 MU_TEST(test_dummy) {
-    mu_assert("1 debe ser igual a 1", 1 == 1);
+    mu_assert("1 should be equal to 1", 1 == 1);
     return 0;
 }
 
