@@ -5,6 +5,7 @@
 - [Background](#background)
 - [How to Compile and Run the Tests](#how-to-compile-and-run-the-tests)
 - [How to Integrate MinUnit in Your Project](#how-to-integrate-minunit-in-your-project)
+- [How to Use the Setup and Purge Scripts](#how-to-use-the-setup-and-purge-scripts)
 - [Common Errors and Solutions](#common-errors-and-solutions)
 - [Related LinkedIn Post](#related-linkedin-post)
 - [Connect](#connect)
@@ -70,6 +71,32 @@ You can create as many test files as you need and add similar rules to your Make
 ---
 
 MinUnit is simple, requires no installation or external dependencies. Just include the header and compile your tests.
+
+## How to Use the Setup and Purge Scripts
+
+### Setup Script
+To add MinUnit to your project, run:
+
+```bash
+sh minunit-setup.sh <include_dir>
+```
+Replace `<include_dir>` with the folder where you want to place `minunit.h` (e.g., `includes`).
+
+- The script will create the necessary structure and files if they do not exist.
+- If a Makefile is present, you will be prompted to add a MinUnit test target.
+
+### Purge Script
+To completely remove MinUnit from your project, run:
+
+```bash
+sh minunit-purge.sh <include_dir>
+```
+Replace `<include_dir>` with the folder where `minunit.h` is located (e.g., `includes`).
+
+- The script will ask for confirmation before deleting each file or directory.
+- You will be reminded to remove the MinUnit target from your Makefile if it exists.
+
+---
 
 ## Common Errors and Solutions
 
