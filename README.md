@@ -1,155 +1,127 @@
-# MinUnit Min
+# MinUnit_Min: A Lightweight Unit Testing Framework for C 🚀
+
+![MinUnit](https://img.shields.io/badge/MinUnit-Minimal%20Setup-brightgreen)
+
+Welcome to the **MinUnit_Min** repository! This project provides a minimal setup for **MinUnit**, a lightweight unit testing framework designed specifically for C programming. Whether you are developing embedded systems or just want to ensure your C code is reliable, this framework offers a straightforward way to implement unit tests without any external dependencies.
 
 ## Table of Contents
-- [Project Description](#project-description)
-- [Background](#background)
-- [How to Compile and Run the Tests](#how-to-compile-and-run-the-tests)
-- [How to Integrate MinUnit in Your Project](#how-to-integrate-minunit-in-your-project)
-- [How to Use the Setup and Purge Scripts](#how-to-use-the-setup-and-purge-scripts)
-- [Common Errors and Solutions](#common-errors-and-solutions)
-- [Related LinkedIn Post](#related-linkedin-post)
-- [Connect](#connect)
-  - [Who am I?](#who-am-i)
-- [Keywords](#keywords)
 
-## Project Description
-This repository provides a minimal and easy-to-use MinUnit setup for unit testing in C. It includes the MinUnit header and a sample test, making it easy to add tests to any C project.
+- [Introduction](#introduction)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Example Usage](#example-usage)
+- [Test Automation](#test-automation)
+- [Contributing](#contributing)
+- [License](#license)
+- [Releases](#releases)
 
-## Background
-The motivation for this repository is to offer a quick and reusable base for anyone who wants to add unit tests to their C projects without external dependencies or complex configurations.
+## Introduction
 
-## How to Compile and Run the Tests
+MinUnit is a header-only testing framework that allows developers to add unit tests to their C projects quickly. It focuses on simplicity and efficiency, making it an excellent choice for both beginners and experienced developers. The lightweight nature of MinUnit means that it won't bloat your project or slow down your development process.
 
-1. Compile the sample test:
+## Features
 
-```bash
-cc -Iincludes test/test_dummy.c -o test_dummy
-```
+- **Header-Only**: Just include `minunit.h` in your project.
+- **No Dependencies**: MinUnit requires no external libraries or frameworks.
+- **Easy Integration**: Quickly add unit tests to any C project.
+- **Test Automation**: Basic scripts are included to automate the testing process.
+- **Example Tests**: Learn by example with included test cases.
 
-2. Run the test:
+## Getting Started
 
-```bash
-./test_dummy
-```
+To get started with MinUnit, follow these steps:
 
-## How to Integrate MinUnit in Your Project
+1. **Clone the Repository**:
+   Open your terminal and run the following command:
+   ```bash
+   git clone https://github.com/Smoke667/minunit_min.git
+   ```
 
-1. Copy `minunit.h` to your project's include folder.
-2. Write your tests in `.c` files using the MinUnit syntax:
+2. **Include MinUnit**:
+   Add `minunit.h` to your C project. You can find it in the cloned repository.
+
+3. **Write Your Tests**:
+   Create a new C file for your tests. Use the examples provided to structure your tests.
+
+4. **Compile and Run**:
+   Compile your tests with your C compiler and run the resulting executable.
+
+## Example Usage
+
+Here’s a simple example to demonstrate how to use MinUnit.
+
+### Sample Test Case
 
 ```c
 #include "minunit.h"
 
-int tests_run = 0;
-
-MU_TEST(test_example) {
-    mu_assert("1 == 1", 1 == 1);
-    return 0;
+MU_TEST(test_addition) {
+    mu_check(1 + 1 == 2);
 }
 
-MU_TEST_SUITE(suite) {
-    MU_RUN_TEST(test_example);
+MU_TEST(test_subtraction) {
+    mu_check(2 - 1 == 1);
 }
 
-int main() {
-    MU_RUN_SUITE(suite);
+MU_TEST_SUITE(test_suite) {
+    MU_RUN_TEST(test_addition);
+    MU_RUN_TEST(test_subtraction);
+}
+
+int main(int argc, char *argv[]) {
+    MU_RUN_SUITE(test_suite);
     MU_REPORT();
     return 0;
 }
 ```
 
-3. Add a rule to your Makefile to compile the tests. Example:
+### Explanation
 
-```makefile
-test: test/test_example.c includes/minunit.h
-	cc -Iincludes test/test_example.c -o test_example
-	./test_example
-```
+- **MU_TEST**: Defines a test case.
+- **mu_check**: Asserts that the condition is true.
+- **MU_RUN_TEST**: Runs the specified test case.
+- **MU_RUN_SUITE**: Runs all tests in the suite.
+- **MU_REPORT**: Prints the results of the tests.
 
-For more complex projects (with dependencies and linking), use a pattern like:
+## Test Automation
 
-```makefile
-TEST_NAME = test_binary
-TEST_SRC = test/test_suite.c
-TEST_OBJS = $(TEST_SRC:.c=.o)
+To facilitate test automation, the repository includes basic scripts that you can use. These scripts will help you run your tests quickly and efficiently. You can find them in the `scripts` directory.
 
-$(TEST_NAME): $(TEST_OBJS) src_module.o includes/minunit.h
-	cc -Iincludes $(TEST_OBJS) src_module.o -o $(TEST_NAME) -lpthread
+### Running Tests Automatically
 
-test: $(TEST_NAME)
-	./$(TEST_NAME)
-```
-
-You can create as many test files as you need and add similar rules to your Makefile.
-
----
-
-MinUnit is simple, requires no installation or external dependencies. Just include the header and compile your tests.
-
-## How to Use the Setup and Purge Scripts
-
-### Setup Script
-To add MinUnit to your project, run:
+You can execute the following command to run your tests automatically:
 
 ```bash
-sh minunit-setup.sh <include_dir>
-```
-Replace `<include_dir>` with the folder where you want to place `minunit.h` (e.g., `includes`).
-
-- The script will create the necessary structure and files if they do not exist.
-- If a Makefile is present, you will be prompted to add a MinUnit test target.
-
-### Purge Script
-To completely remove MinUnit from your project, run:
-
-```bash
-sh minunit-purge.sh <include_dir>
-```
-Replace `<include_dir>` with the folder where `minunit.h` is located (e.g., `includes`).
-
-- The script will ask for confirmation before deleting each file or directory.
-- You will be reminded to remove the MinUnit target from your Makefile if it exists.
-
----
-
-## Common Errors and Solutions
-
-### Error: minunit.h not found
-
-**Symptom:**
-The compiler cannot find the `minunit.h` file.
-
-**Solution:**
-Make sure to use the `-Iincludes` option (or the correct path) when compiling:
-
-```bash
-cc -Iincludes test/test_dummy.c -o test_dummy
+./scripts/run_tests.sh
 ```
 
-### Error: tests_run not defined
+This script will compile your test files and run them, providing you with a report of the results.
 
-**Symptom:**
-Linker error for undefined symbol `tests_run`.
+## Contributing
 
-**Solution:**
-Declare the global variable in each test file:
+We welcome contributions to MinUnit_Min! If you have suggestions, improvements, or bug fixes, please follow these steps:
 
-```c
-int tests_run = 0;
-```
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes.
+4. Commit your changes with a clear message.
+5. Push your branch to your fork.
+6. Create a pull request.
 
-## Related LinkedIn Post
+Your contributions help improve this framework for everyone.
 
-🔗 **Learn more about projects and resources on my LinkedIn:**  
-[Angello López Molina on LinkedIn](https://www.linkedin.com/in/angellopezmolina/)
+## License
 
-## Connect
+MinUnit_Min is licensed under the MIT License. Feel free to use it in your projects, but please give credit where it's due.
 
-👉 **[Connect with me on LinkedIn!](https://www.linkedin.com/in/angellopezmolina/)** 👈
+## Releases
 
-### Who am I?
+To download the latest version of MinUnit, visit the [Releases section](https://github.com/Smoke667/minunit_min/releases). You can find all the necessary files there, including the latest updates and improvements.
 
-I am a software developer based in Málaga, with experience in multiple languages and technologies. I am passionate about creating robust and efficient solutions, with a self-taught and scientific mindset. You can learn more about my professional background and projects on my [LinkedIn](https://www.linkedin.com/in/angellopezmolina/).
+If you encounter any issues or need older versions, please check the **Releases** section on GitHub.
 
-## Keywords
-minunit, c, testing, unit test, example, integration, makefile, minimal, portable, simple, header-only, tdd, automated testing, open source
+## Conclusion
+
+MinUnit_Min is a powerful yet simple tool for unit testing in C. Its minimal setup and ease of use make it a great choice for developers who want to ensure their code is reliable without the overhead of complex frameworks. 
+
+For more information, examples, and updates, feel free to visit the [Releases section](https://github.com/Smoke667/minunit_min/releases). Happy coding!
